@@ -1,6 +1,4 @@
-Certainly, here's the updated README.md with a "Piece of Advice" section:
-
-# Instagram Post Downloader
+# Instagram New Post Downloader
 
 This Python script allows you to download Instagram posts from specific user profiles and generate HTML pages for easy
 viewing. **Please note that the developer is not responsible for any misuse of this script**, and it should be used in
