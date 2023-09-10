@@ -97,10 +97,10 @@ def get_posts(client: Client, profile: str, post_numbers: int):
 
         download_media(client, media, path)
         generate_html(media.caption_text, path)
+        update_profile_history(profile, history)
 
         print(f"{media.code} downloaded with success")
 
-    update_profile_history(profile, history)
     print(f"{profile} {'has' if len(new_posts) > 0 else 'has no'} new posts")
 
     return
