@@ -74,8 +74,6 @@ def generate_html(caption_text: str, code: str, path: Path):
 
 
 def get_posts(client: Client, profile: str, post_numbers: int):
-    print(f"Getting posts from {profile}")
-
     history = get_profile_history(profile)
 
     user_id = client.user_id_from_username(profile)
