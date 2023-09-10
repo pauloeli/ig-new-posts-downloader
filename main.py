@@ -60,12 +60,12 @@ def update_profile_history(profile: str, history: []):
     return
 
 
-def generate_html(caption_text: str, path: Path):
+def generate_html(caption_text: str, code: str, path: Path):
     env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
     template = env.get_template('media_template.html')
 
     media_urls = [f"{media_file}" for media_file in os.listdir(path) if not media_file.endswith('.txt')]
-    html_content = template.render(caption=caption_text, media_urls=media_urls)
+    html_content = template.render(caption=caption_text, code=code, media_urls=media_urls)
 
     with open(path / "index.html", "w", encoding="utf-8") as file:
         file.write(html_content)
@@ -96,10 +96,8 @@ def get_posts(client: Client, profile: str, post_numbers: int):
             file.write(media.caption_text)
 
         download_media(client, media, path)
-        generate_html(media.caption_text, path)
+        generate_html(media.caption_text, media.code, path)
         update_profile_history(profile, history)
-
-        print(f"{media.code} downloaded with success")
 
     print(f"{profile} {'has' if len(new_posts) > 0 else 'has no'} new posts")
 

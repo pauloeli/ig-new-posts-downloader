@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Media Detail</title>
+    <title>Media Details</title>
 </head>
 <body style="text-align:center;">
-    <div style="margin: 0 auto; max-width: 800px;">
-        <h2>Description</h2>
-        <div>{{ caption }}</div>
+<div style="margin: 0 auto; max-width: 800px;">
+    <h2>Description</h2>
+    <div>{{ caption }}</div>
 
-        <h2>Media</h2>
-        {% for url in media_urls %}
-            {% if url.endswith('.jpg') %}
-                <img src="{{ url }}" alt="Image" width="1080" height="1080">
-            {% elif url.endswith('.mp4') %}
-                <video width="640" height="640" controls>
-                    <source src="{{ url }}" type="video/mp4">
-                </video>
-            {% else %}
-                Unknown media type
-            {% endif %}
-        {% endfor %}
-    </div>
+    <h4>Instagram Post</h4>
+    <a href="https://www.instagram.com/p/{{ code }}/">https://www.instagram.com/p/{{ code }}/</a>
+
+    <h2>Media</h2>
+    {% for url in media_urls %}
+        {% if url.endswith('.jpg') %}
+            <img src="{{ url }}" alt="Image" width="1080" height="1080">
+        {% elif url.endswith('.mp4') %}
+            <video width="640" height="640" controls>
+                <source src="{{ url }}" type="video/mp4">
+            </video>
+        {% else %}
+            Unknown media type
+        {% endif %}
+    {% endfor %}
+</div>
 </body>
 </html>
