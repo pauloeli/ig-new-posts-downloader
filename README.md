@@ -61,7 +61,7 @@ compliance with Instagram's terms of service.
 
 ## Piece of Advice
 
-**Piece of Advice:** It's highly recommended not to use your primary Instagram account to log in when running this
+It's highly recommended not to use your primary Instagram account to log in when running this
 script. Create a separate Instagram account for this purpose to protect your primary account's credentials and privacy.
 
 Additionally, please pay attention to any potential security issues related to the `instagrapi` library, and ensure that
