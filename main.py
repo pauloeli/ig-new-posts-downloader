@@ -6,20 +6,36 @@ from instagrapi import Client
 from jinja2 import Environment, FileSystemLoader
 from tqdm import tqdm
 
+import os
+
 
 def load_configurations():
     load_dotenv()
 
-    user = os.getenv("username")
-    pswd = os.getenv("password")
-    post_numbers = os.getenv("posts")
-    profiles_str = os.getenv("profiles")
+    config_mapping = {
+        "user": "username",
+        "pswd": "password",
+        "user_posts": "user_posts",
+        "new_user_posts": "new_user_posts",
+        "profiles": "profiles",
+        "save_method": "save_method"
+    }
 
-    if None in (user, pswd, profiles_str):
-        raise ValueError("One or more required environment variables are missing.")
+    missing_variables = [env_var for key, env_var in config_mapping.items() if os.getenv(env_var) is None]
+    if missing_variables:
+        raise ValueError(f"One or more required environment variables are missing: {', '.join(missing_variables)}")
 
-    profiles = set(profiles_str.split(","))
-    return {"user": user, "pswd": pswd, "profiles": profiles, "post": post_numbers}
+    config = {}
+    for key, env_var in config_mapping.items():
+        config[key] = os.getenv(env_var)
+
+    config.setdefault("user_posts", str(5))
+    config.setdefault("new_user_posts", str(10))
+    config.setdefault("save_method", "new")
+
+    config["profiles"] = set(config["profiles"].split(","))
+
+    return config
 
 
 def connect(configurations: dict):
@@ -79,7 +95,6 @@ def get_posts(client: Client, profile: str, posts: int, new_user_posts: int, sav
 
     user_id = client.user_id_from_username(profile)
     if not history:
-        print(f"{profile} don't have history, searching {new_user_posts} last posts")
         medias = client.user_medias(user_id, new_user_posts)
     else:
         medias = client.user_medias(user_id, posts)
