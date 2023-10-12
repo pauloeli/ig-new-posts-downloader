@@ -13,7 +13,7 @@
 
     <h2>Media</h2>
     {% for url in media_urls %}
-        {% if url.endswith('.jpg') %}
+        {% if url.endswith('.jpg') or url.endswith('.webp') %}
             <img src="{{ url }}" alt="Image" width="1080" height="1080">
         {% elif url.endswith('.mp4') %}
             <video width="640" height="640" controls>

@@ -4,6 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from instagrapi import Client
 from jinja2 import Environment, FileSystemLoader
+from tqdm import tqdm
 
 
 def load_configurations():
@@ -17,7 +18,7 @@ def load_configurations():
     if None in (user, pswd, profiles_str):
         raise ValueError("One or more required environment variables are missing.")
 
-    profiles = profiles_str.split(",")
+    profiles = set(profiles_str.split(","))
     return {"user": user, "pswd": pswd, "profiles": profiles, "post": post_numbers}
 
 
@@ -73,11 +74,15 @@ def generate_html(caption_text: str, code: str, path: Path):
     return
 
 
-def get_posts(client: Client, profile: str, post_numbers: int):
+def get_posts(client: Client, profile: str, posts: int, new_user_posts: int, save_method: str):
     history = get_profile_history(profile)
 
     user_id = client.user_id_from_username(profile)
-    medias = client.user_medias(user_id, post_numbers)
+    if not history:
+        print(f"{profile} don't have history, searching {new_user_posts} last posts")
+        medias = client.user_medias(user_id, new_user_posts)
+    else:
+        medias = client.user_medias(user_id, posts)
 
     new_posts = []
     for media in medias:
@@ -87,7 +92,11 @@ def get_posts(client: Client, profile: str, post_numbers: int):
         new_posts.append(media.code)
         history.append(media.code)
 
-        path = Path.cwd() / "profiles" / profile / media.code
+        if save_method == "new":
+            path = Path.cwd() / "new" / media.code
+        else:
+            path = Path.cwd() / "profiles" / profile / media.code
+
         path.mkdir(parents=True, exist_ok=True)
 
         with open(path / "description.txt", "w", encoding="utf-8") as file:
@@ -106,5 +115,19 @@ if __name__ == "__main__":
     configurations = load_configurations()
     client = connect(configurations)
 
-    for profile in configurations["profiles"]:
-        get_posts(client, profile, int(configurations["post"]))
+    profiles = configurations["profiles"]
+    if not profiles:
+        print(f"Profiles list is empty, exiting")
+        exit(0)
+
+    save_method = configurations["save_method"]
+    user_posts = int(configurations["user_posts"])
+    new_user_posts = int(configurations["new_user_posts"])
+
+    progress_bar = tqdm(desc="Processing Profiles", total=len(profiles), position=0, leave=True)
+
+    for idx, profile in enumerate(profiles):
+        get_posts(client, profile, user_posts, new_user_posts, save_method)
+        progress_bar.update()
+
+    progress_bar.close()

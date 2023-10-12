@@ -1,3 +1,4 @@
 instagrapi>=2.0.0
 python-dotenv>=1.0.0
 jinja2>=2.6
+tqdm>=4.0

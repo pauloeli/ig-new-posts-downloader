@@ -38,13 +38,20 @@ compliance with Instagram's terms of service.
    ```
    username=your_instagram_username
    password=your_instagram_password
-   posts=number_of_posts_to_download
+   user_posts=number_of_posts_to_download_if_user_has_history
+   new_user_posts=number_of_posts_to_download_if_user_has_not_history
+   save_method=new|profile
    profiles=profile1,profile2,profile3
    ```
 
    Replace `your_instagram_username` and `your_instagram_password` with your Instagram credentials, specify the number
-   of posts to download in `number_of_posts_to_download`, and list the profiles you want to download posts from
+   of posts to download in `number_of_posts_to_download_if_user_has_history` if user has history and
+   in `number_of_posts_to_download_if_user_has_not_history` if is the first time of profile and the history folder
+   doesn't exist, and list the profiles you want to download posts from
    in `profile1,profile2,profile3`.
+
+   On `save_method` specify if you want save the posts inside the profile folder (`profile` value) or news posts must be
+   save in the `new` folder.
 
 ## Usage
 
@@ -69,10 +76,12 @@ you are using the latest version to minimize security risks.
 
 To prevent your account from being blocked due to suspicious activity, follow these steps after running the application:
 
-1. Visit the [Login Activity](https://accountscenter.instagram.com/password_and_security/login_activity/) page on Instagram.
+1. Visit the [Login Activity](https://accountscenter.instagram.com/password_and_security/login_activity/) page on
+   Instagram.
 2. Mark the application's login as safe.
 
-Failing to do so may result in your account being temporarily blocked if there are multiple login attempts within a short period.
+Failing to do so may result in your account being temporarily blocked if there are multiple login attempts within a
+short period.
 
 ## Developer Disclaimer
 
