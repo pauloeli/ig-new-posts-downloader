@@ -106,7 +106,8 @@ def get_posts(client: Client, profile: str, posts: int, new_user_posts: int, sav
         generate_html(media.caption_text, media.code, path)
         update_profile_history(profile, history)
 
-    print(f"{profile} {'has' if len(new_posts) > 0 else 'has no'} new posts")
+    if save_method == "profile":
+        print(f"{profile} {'has' if len(new_posts) > 0 else 'has no'} new posts")
 
     return
 
